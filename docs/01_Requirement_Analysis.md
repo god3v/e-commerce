@@ -30,3 +30,53 @@
 - 선착순 쿠폰은 `쿠폰`의 최대 발급 개수에 맞춰 선착순으로 발급됩니다.
 - `발급 쿠폰` 상태는 `사용 가능`, `사용 완료`, `기한 만료`로 구분합니다.
 - `쿠폰`은 **발급 기한**이 존재하고, `발급 쿠폰`은 **사용 기한**이 존재합니다.
+
+## Flow Charts
+![order_flow_chart](img/order_flow_chart.png)
+
+## Sequence Diagram
+### 상품 주문
+```mermaid
+sequenceDiagram
+	autonumber
+	
+	actor User
+    participant API
+    participant Order
+    participant Product
+    participant Coupon
+    participant Point
+
+	User ->> +API: 상품 주문 API 호출
+    API ->> +Order: 상품 주문 요청
+    Order ->> +Product: 상품 재고 변경 요청
+
+    alt 상품 재고 충족
+        Product ->> Product: 재고 차감
+        Product -->> -Order: 상품 재고 변경 결과 반환
+    else 상품 재고 부족
+        Product -->> User: 에러 메시지 반환
+    end
+
+    opt 쿠폰을 사용하는 경우
+    Order ->> +Coupon: 쿠폰 사용 요청
+        alt 쿠폰 사용 가능
+            Coupon ->> Coupon: 쿠폰 사용 처리
+            Coupon -->> -Order: 쿠폰 할인 금액 적용 결과 반환
+        else 쿠폰 유효 기간 만료
+            Coupon -->> User: 에러 메시지 반환
+        end
+    end
+
+    Order ->> +Point: 결제 요청
+    alt 포인트 충족
+        Point ->> Point: 포인트 차감
+        Point -->> -Order: 결제 결과 반환
+    else 포인트 부족
+        Point -->> User: 에러 메시지 반환
+    end
+    
+    Order ->> Order: 주문 정보 생성
+    Order -->> -API: 주문 결과 반환
+    API -->> -User: 상품 주문 API 응답
+```
