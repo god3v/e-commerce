@@ -37,6 +37,11 @@
 ## Sequence Diagram
 ### 상품 주문
 ```mermaid
+---
+title: 상품 주문
+config:
+    theme: neutral
+---
 sequenceDiagram
 	autonumber
 	
