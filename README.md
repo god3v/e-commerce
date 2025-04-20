@@ -13,7 +13,8 @@
 ### 설계 문서
 - **Milestone**: [GitHub Project](https://github.com/users/god3v/projects/4/views/1)
 - **요구사항 분석 및 UML**: [01_Requirement_Analysis.md](docs/01_Requirement_Analysis.md)
-- **ERD**: [02.ERD](docs/02_ERD.md)
+- **ERD**: [02.ERD.md](docs/02_ERD.md)
+- **API Specification**: [03_API_Document.md](docs/03_API_Document.md)
 
 ### 환경
 - Kotlin 1.9

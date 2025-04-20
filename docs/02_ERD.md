@@ -8,7 +8,7 @@ config:
     theme: neutral
 ---
 erDiagram
-    user ||--o| point : has
+    user ||--o| balance : has
     user ||--o{ issued_coupon : has
     user ||--o{ order : has
 
@@ -41,7 +41,7 @@ erDiagram
     payment {
         bigint id PK "결제 ID"
         bigint order_id FK "주문 ID"
-        int amount "결제 금액"
+        int price "결제 금액"
         varchar payment_method "결제 수단"
         varchar payment_status "결제 상태 (결제 완료 / 결제 취소)"
         timestamp created_at "생성 일시"
@@ -73,7 +73,7 @@ erDiagram
         timestamp updated_at "수정 일시"
     }
 
-    point {
+    balance {
         bigint id PK "포인트 ID"
         bigint user_id FK, UK "사용자 ID"
         int amount "잔액"
