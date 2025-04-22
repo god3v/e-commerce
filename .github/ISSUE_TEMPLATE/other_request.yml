@@ -1,0 +1,32 @@
+name: 📑 기타 요청
+description: 기능 개선 또는 문서화 요청 등을 위해 사용하세요.
+title: "[Request] "
+labels: ["request", "enhancement"]
+assignees: []
+
+body:
+  - type: input
+    id: request_title
+    attributes:
+      label: 요청 제목
+      placeholder: 예) 로그인 페이지 디자인 개선
+    validations:
+      required: true
+
+  - type: textarea
+    id: request_description
+    attributes:
+      label: 요청 상세 설명
+      placeholder: 요청하는 내용이나 이유를 자세히 설명해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: 요청 완료 기준
+      placeholder: |
+        - [ ] 페이지 디자인 개선
+        - [ ] 색상 변경 및 버튼 추가
+    validations:
+      required: true
