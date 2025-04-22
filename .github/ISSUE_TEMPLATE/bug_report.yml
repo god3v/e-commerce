@@ -1,0 +1,54 @@
+name: 🐛 버그 리포트
+description: 버그를 보고하려면 이 템플릿을 사용하세요.
+title: "[Bug] "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: 간단한 버그 요약
+      placeholder: 예) 로그인 후 화면이 깨짐
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 버그 상세 설명
+      placeholder: 버그가 발생한 상황을 자세히 설명해주세요.
+    validations:
+      required: true
+
+  - type: input
+    id: steps
+    attributes:
+      label: 재현 절차
+      placeholder: 예) 1. 로그인 페이지로 이동 2. 로그인 버튼 클릭
+    validations:
+      required: true
+
+  - type: input
+    id: expected_result
+    attributes:
+      label: 예상된 결과
+      placeholder: 예) 정상적으로 대시보드 페이지로 이동
+    validations:
+      required: true
+
+  - type: input
+    id: actual_result
+    attributes:
+      label: 실제 결과
+      placeholder: 예) 500 서버 에러 페이지로 리다이렉트
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: 발생 환경 (OS, 브라우저 등)
+      placeholder: 예) macOS 10.15, Chrome 89
+    validations:
+      required: false
