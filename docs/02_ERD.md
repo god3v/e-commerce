@@ -8,7 +8,7 @@ config:
     theme: neutral
 ---
 erDiagram
-    user ||--o| balance : has
+    user ||--o| point : has
     user ||--o{ issued_coupon : has
     user ||--o{ order : has
 
@@ -27,7 +27,7 @@ erDiagram
         bigint id PK "주문 ID"
         bigint user_id FK "사용자 ID"
         bigint issued_coupon_id FK "발급 쿠폰 ID"
-        varchar order_status "주문 상태 (주문 생성 / 결제 완료 / 주문 취소)"
+        varchar status "주문 상태 (주문 생성 / 결제 완료 / 주문 취소)"
         timestamp created_at "생성 일시"
         timestamp updated_at "수정 일시"
     }
@@ -42,8 +42,8 @@ erDiagram
         bigint id PK "결제 ID"
         bigint order_id FK "주문 ID"
         int price "결제 금액"
-        varchar payment_method "결제 수단"
-        varchar payment_status "결제 상태 (결제 완료 / 결제 취소)"
+        varchar method "결제 수단"
+        varchar status "결제 상태 (결제 완료 / 결제 취소)"
         timestamp created_at "생성 일시"
         timestamp updated_at "수정 일시"
     }
@@ -60,7 +60,7 @@ erDiagram
     item {
         bigint id PK "상품 ID"
         varchar name "상품명"
-        varchar item_status "상품 판매 상태 (판매중 / 판매 중단)"
+        varchar status "상품 판매 상태 (판매중 / 판매 중단)"
         timestamp created_at "생성 일시"
         timestamp updated_at "수정 일시"
     }
@@ -73,7 +73,7 @@ erDiagram
         timestamp updated_at "수정 일시"
     }
 
-    balance {
+    point {
         bigint id PK "포인트 ID"
         bigint user_id FK, UK "사용자 ID"
         int amount "잔액"
