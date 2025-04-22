@@ -1,134 +1,15 @@
 # API 명세
 
-## 잔액 API
-
-### 1. 잔액 조회
-
-#### [Description]
-사용자 잔액을 조회한다.   
-<br>
-
-#### [Request]
-
-- URL : `/api/v1/users/{id}/balance`
-- Method : `GET`
-- Path Variable
-
-| Parameter | Description |
-|-----------|-------------|
-| id        | 사용자 ID      |   
-<br>
-
-#### [Response]
-
-- Response Body
-
-```json
-{
-  "code": 200,
-  "message": "OK",
-  "errorMessage": null,
-  "data": {
-    "content": {
-      "amount": 1000000
-    },
-    "pagination": null
-  }
-}
-```
-
-- Response Fields
-
-| Path                | Type   | Description |
-|---------------------|--------|-------------|
-| code                | Number | 응답 코드       |
-| message             | String | 응답 메세지      |
-| errorMessage        | null   | 실패 이유       |
-| data                | Object | 결과 데이터      |
-| data.content        | Object | 잔액 조회 데이터   |
-| data.content.amount | Number | 잔액          |
-| data.pagination     | null   | 페이징 없음      |
-
-<br>
-
-#### [Error Spec]
-| HTTP CODE | MESSAGE             | SOLUTION                  |
-|-----------|---------------------|---------------------------|
-| 400       | 유효하지 않은 사용자 ID 입니다. | 올바른 사용자 ID를 입력하였는지 확인합니다. |
-
-<br>
+1. [상품 목록 조회](#상품-목록-조회)
+2. [인기 상품 조회](#인기-상품-조회)
+3. [쿠폰 발급](#쿠폰-발급)
+4. [보유 쿠폰 목록 조회](#보유-쿠폰-목록-조회)
+5. [주문](#주문-생성)
+6. [결제](#결제-진행)
+7. [잔액 조회](#잔액-조회)
+8. [잔액 충전](#잔액-충전)
 
 ---
-
-### 잔액 충전
-
-#### [Description]
-사용자 잔액을 충전한다.   
-<br>
-#### [Request]
-
-- URL : `/api/v1/users/{id}/balance`
-- Method : `POST`
-- Path Variable
-
-| Parameter | Description |
-|-----------|-------------|
-| id        | 사용자 ID      |
-
-- Request Body
-
-```json
-{
-  "amount": 10000
-}
-```
-
-- Request Fields
-
-| Path   | Type   | Required | Description |
-|--------|--------|----------|-------------|
-| amount | Number | true     | 충전 금액       |
-<br>
-
-#### [Response]
-
-- Response Body
-
-```json
-{
-  "code": 200,
-  "message": "OK",
-  "errorMessage": null,
-  "data": {
-    "content": null,
-    "pagination": null
-  }
-}
-```
-
-- Response Fields
-
-| Path                | Type   | Description |
-|---------------------|--------|-------------|
-| code                | Number | 응답 코드       |
-| message             | String | 응답 메세지      |
-| errorMessage        | null   | 실패 이유       |
-| data                | Object | 결과 데이터      |
-| data.content        | null   | 결과 데이터 없음   |
-| data.pagination     | null   | 페이징 없음      |
-
-<br>
-
-#### [Error Spec]
-| HTTP CODE | MESSAGE                                                              | SOLUTION                  |
-|-----------|----------------------------------------------------------------------|---------------------------|
-| 400       | 유효하지 않은 사용자 ID 입니다.                                                  | 올바른 사용자 ID를 입력하였는지 확인합니다. |
-| 400       | 잔액 충전 시 최소 금액은 10,000 이상 1,000,000 이하입니다.                            | 충전 금액을 올바르게 입력하였는지 확인합니다. |
-| 400       | 잔액 최대 금액이 초과되었습니다. (현재 잔액: {currentAmount}, 충전 시도 잔액: {ChargeAmount} | 잔액을 사용한 뒤에 충전을 시도합니다.     |
-
-<br>
-
---- 
 
 ## 상품 API
 
@@ -136,17 +17,18 @@
 
 #### [Description]
 상품 목록을 조회한다.   
-<br>
+
 #### [Request]
+```http request
+GET /api/v1/items
+Accept: application/json
+```
 
-- URL : `/api/v1/products`
-- Method : `GET`   
-<br>
 #### [Response]
-
 - Response Body
 
 ```json
+// 200 OK
 {
   "code": 200,
   "message": "OK",
@@ -157,6 +39,7 @@
         "id": 1,
         "name": "상품명",
         "price": 300000,
+        "status": "SELLING",
         "stock": 3
       }
     ],
@@ -182,6 +65,7 @@
 | data.content[].id             | Number | 상품 ID           |
 | data.content[].name           | String | 상품명             |
 | data.content[].price          | Number | 상품 가격           |
+| data.content[].status         | Number | 상품 판매 상태     |
 | data.content[].stock          | Number | 상품 재고           |
 | data.pagination               | Object | 페이징             |
 | data.pagination.countPerPage  | Number | 페이지 별 데이터 Count |
@@ -189,9 +73,76 @@
 | data.pagination.totalPage     | Number | 전체 페이지 Count    |
 | data.pagination.totalElements | Number | 전체 데이터 Count    |
 
+
 <br> 
 
 --- 
+
+### 인기 상품 조회
+
+#### [Description]
+최근 3일간 상위 상품 Top 5 조회.   
+
+#### [Request]
+```http request
+GET /api/v1/products/popular
+Accept: application/json
+```
+
+#### [Response]
+- Response Body
+
+```json
+// 200 OK
+{
+  "code": 200,
+  "message": "OK",
+  "errorMessage": null,
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "name": "상품명",
+        "price": 300000,
+        "status": "SELLING",
+        "saleCount": 3,
+        "stock": 3
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "countPerPage": 10,
+      "totalPages": 1,
+      "totalElements": 3
+    }
+  }
+}
+```
+
+- Response Fields
+
+| Path                          | Type   | Description     |
+|-------------------------------|--------|-----------------|
+| code                          | Number | 응답 코드           |
+| message                       | String | 응답 메세지          |
+| errorMessage                  | null   | 실패 이유           |
+| data                          | Object | 결과 데이터          |
+| data.content[]                | Array  | 상위 상품 조회 결과 데이터 |
+| data.content[].id             | Number | 상품 ID           |
+| data.content[].name           | String | 상품명             |
+| data.content[].price          | Number | 상품 가격           |
+| data.content[].status         | Number | 상품 판매 상태     |
+| data.content[].saleCount      | Number | 상품 판매 수         |
+| data.content[].stock          | Number | 상품 재고           |
+| data.pagination               | Object | 페이징             |
+| data.pagination.countPerPage  | Number | 페이지 별 데이터 Count |
+| data.pagination.currentPage   | Number | 현재 페이지          |
+| data.pagination.totalPage     | Number | 전체 페이지 Count    |
+| data.pagination.totalElements | Number | 전체 데이터 Count    |
+
+<br>
+
+---
 
 ## 쿠폰 API
 
@@ -199,23 +150,24 @@
 
 #### [Description]
 사용 가능한 보유 쿠폰 목록을 조회한다.   
-<br>
-#### [Request]
 
-- URL : `/api/v1/users/{id}/coupons`
-- Method : `GET`
+#### [Request]
+```http request
+GET /api/v1/users/{userId}/coupons
+Accept: application/json
+```
 - Path Variable
 
 | Parameter | Description |
 |-----------|-------------|
-| id        | 사용자 ID      |
-<br>
+| userId    | 사용자 ID    |
 
 #### [Response]
 
 - Response Body
 
 ```json
+// 200 OK
 {
   "code": 200,
   "message": "OK",
@@ -285,30 +237,27 @@
 
 #### [Description]
 쿠폰을 발급한다.   
-<br>
+
 #### [Request]
+```http request
+POST /api/v1/users/{userId}/coupons
+Content-Type: application/json
 
-- URL : `/api/v1/users/{id}/coupons`
-- Method : `POST`
-- Path Variable
-
-| Parameter | Description |
-|-----------|-------------|
-| id        | 사용자 ID      |
-
-- Request Body
-
-```json
 {
   "couponId": 1
 }
 ```
+- Path Variable
+
+| Parameter | Description |
+|-----------|-------------|
+| userId    | 사용자 ID    |
 
 - Request Fields
 
 | Path     | Type   | Required | Description |
 |----------|--------|----------|-------------|
-| couponId | Number | true     | 쿠폰 ID       |
+| couponId | Number | true     | 쿠폰 ID     |
 
 <br> 
 
@@ -317,6 +266,7 @@
 - Response Body
 
 ```json
+// 200 OK
 {
   "code": 200,
   "message": "OK",
@@ -357,15 +307,12 @@
 
 #### [Description]
 주문을 생성한다.   
-<br>
+
 #### [Request]
+```http request
+POST /api/v1/orders
+Content-Type: application/json
 
-- URL : `/api/v1/orders`
-- Method : `POST`
-
-- Request Body
-
-```json
 {
   "userId": 1,
   "issuedCouponId": 2,
@@ -394,6 +341,7 @@
 - Response Body
 
 ```json
+// 200 OK
 {
   "code": 200,
   "message": "OK",
@@ -440,15 +388,12 @@
 
 #### [Description]
 결제를 진행한다.   
-<br>
+
 #### [Request]
+```http request
+POST /api/v1/payments
+Content-Type: application/json
 
-- URL : `/api/v1/payments`
-- Method : `POST`
-
-- Request Body
-
-```json
 {
   "userId": 1,
   "orderId": 1,
@@ -473,6 +418,7 @@
 - Response Body
 
 ```json
+// 200 OK
 {
   "code": 200,
   "message": "OK",
@@ -507,20 +453,95 @@
 
 <br>
 
----
+--- 
 
-## 상품 통계 API
 
-### 상위 상품 조회
+## 잔액 API
+
+### 잔액 조회
 
 #### [Description]
-최근 3일간 상위 상품 Top 5 조회.   
-<br>
+사용자 잔액을 조회한다.
+
 #### [Request]
+```http request
+GET /api/v1/users/{userId}/points
+Accept: application/json
+```
+- Path Variable
 
-- URL : `/api/v1/products/ranks`
-- Method : `GET`
+| Parameter | Description |
+|-----------|-------------|
+| userId    | 사용자 ID    |   
 
+
+#### [Response]
+
+- Response Body
+
+```json
+// 200 OK
+{
+  "code": 200,
+  "message": "OK",
+  "errorMessage": null,
+  "data": {
+    "content": {
+      "amount": 1000000
+    },
+    "pagination": null
+  }
+}
+```
+
+- Response Fields
+
+| Path                | Type   | Description |
+|---------------------|--------|-------------|
+| code                | Number | 응답 코드       |
+| message             | String | 응답 메세지      |
+| errorMessage        | null   | 실패 이유       |
+| data                | Object | 결과 데이터      |
+| data.content        | Object | 잔액 조회 데이터   |
+| data.content.amount | Number | 잔액          |
+| data.pagination     | null   | 페이징 없음      |
+
+<br>
+
+#### [Error Spec]
+| HTTP CODE | MESSAGE             | SOLUTION                  |
+|-----------|---------------------|---------------------------|
+| 400       | 유효하지 않은 사용자 ID 입니다. | 올바른 사용자 ID를 입력하였는지 확인합니다. |
+
+<br>
+
+---
+
+### 잔액 충전
+
+#### [Description]
+사용자 잔액을 충전한다.   
+
+#### [Request]
+```http request
+POST /api/v1/users/{userId}/points
+Content-Type: application/json
+
+{
+  "amount": 10000
+}
+```
+- Path Variable
+
+| Parameter | Description |
+|-----------|-------------|
+| userId    | 사용자 ID    |
+
+- Request Fields
+
+| Path   | Type   | Required | Description |
+|--------|--------|----------|-------------|
+| amount | Number | true     | 충전 금액       |
 <br>
 
 #### [Response]
@@ -528,44 +549,34 @@
 - Response Body
 
 ```json
+// 200 OK
 {
   "code": 200,
   "message": "OK",
   "errorMessage": null,
   "data": {
-    "content": [
-      {
-        "id": 1,
-        "name": "상품명",
-        "price": 300000,
-        "saleCount": 3
-      }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "countPerPage": 10,
-      "totalPages": 1,
-      "totalElements": 3
-    }
+    "content": null,
+    "pagination": null
   }
 }
 ```
 
 - Response Fields
 
-| Path                          | Type   | Description     |
-|-------------------------------|--------|-----------------|
-| code                          | Number | 응답 코드           |
-| message                       | String | 응답 메세지          |
-| errorMessage                  | null   | 실패 이유           |
-| data                          | Object | 결과 데이터          |
-| data.content[]                | Array  | 상위 상품 조회 결과 데이터 |
-| data.content[].id             | Number | 상품 ID           |
-| data.content[].name           | String | 상품명             |
-| data.content[].price          | Number | 상품 가격           |
-| data.content[].saleCount      | Number | 상품 판매 수         |
-| data.pagination               | Object | 페이징             |
-| data.pagination.countPerPage  | Number | 페이지 별 데이터 Count |
-| data.pagination.currentPage   | Number | 현재 페이지          |
-| data.pagination.totalPage     | Number | 전체 페이지 Count    |
-| data.pagination.totalElements | Number | 전체 데이터 Count    |
+| Path                | Type   | Description |
+|---------------------|--------|-------------|
+| code                | Number | 응답 코드       |
+| message             | String | 응답 메세지      |
+| errorMessage        | null   | 실패 이유       |
+| data                | Object | 결과 데이터      |
+| data.content        | null   | 결과 데이터 없음   |
+| data.pagination     | null   | 페이징 없음      |
+
+<br>
+
+#### [Error Spec]
+| HTTP CODE | MESSAGE                                                              | SOLUTION                  |
+|-----------|----------------------------------------------------------------------|---------------------------|
+| 400       | 유효하지 않은 사용자 ID 입니다.                                                  | 올바른 사용자 ID를 입력하였는지 확인합니다. |
+| 400       | 잔액 충전 시 최소 금액은 10,000 이상 1,000,000 이하입니다.                            | 충전 금액을 올바르게 입력하였는지 확인합니다. |
+| 400       | 잔액 최대 금액이 초과되었습니다. (현재 잔액: {currentAmount}, 충전 시도 잔액: {ChargeAmount} | 잔액을 사용한 뒤에 충전을 시도합니다.     |
