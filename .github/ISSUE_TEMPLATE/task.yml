@@ -1,0 +1,42 @@
+name: 📝 작업(Task)
+description: 특정 작업을 추적하고 완료하기 위한 템플릿입니다.
+title: "[Task] "
+labels: ["task", "in progress"]
+assignees: []
+
+body:
+  - type: input
+    id: task_summary
+    attributes:
+      label: 작업 요약
+      placeholder: 예) 사용자 인증 기능 개발
+    validations:
+      required: true
+
+  - type: textarea
+    id: task_detail
+    attributes:
+      label: 작업 상세 설명
+      placeholder: 작업에 대한 세부 설명을 작성해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: to_do_list
+    attributes:
+      label: 해야 할 일 목록
+      placeholder: |
+        - [ ] API 명세 작성
+        - [ ] UI 설계
+        - [ ] 코드 구현
+        - [ ] 리뷰 요청
+    validations:
+      required: true
+
+  - type: input
+    id: expected_outcome
+    attributes:
+      label: 완료 기준
+      placeholder: 예) 로그인 기능이 정상적으로 작동해야 함
+    validations:
+      required: true
