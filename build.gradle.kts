@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	kotlin("jvm") version "1.9.25"
+	kotlin("kapt") version "2.1.0"
 	kotlin("plugin.jpa") version "1.9.25" apply false
 	kotlin("plugin.spring") version "1.9.25" apply false
 	id("org.springframework.boot") version "3.4.4" apply false
@@ -36,6 +37,7 @@ allprojects {
 
 	tasks.withType<Test> {
 		useJUnitPlatform()
+		systemProperty("user.timezone", "UTC")
 	}
 }
 
@@ -60,7 +62,7 @@ subprojects {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
