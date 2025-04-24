@@ -17,42 +17,38 @@ import java.util.Date
 class CouponController: CouponApiController {
 
     @GetMapping("/users/{userId}/coupons")
-    override fun getCoupons(@PathVariable userId: Long): ResponseEntity<ApiResponse<List<CouponResponse>>> {
+    override fun getCoupons(@PathVariable userId: Long): ApiResponse<List<CouponResponse>> {
 
-        return ResponseEntity.ok().body(
-            ApiResponse.success(
-                listOf(CouponResponse(
-                    1L,
-                    "쿠폰",
-                    "정액",
-                    1000,
-                    1000,
-                    1000,
-                    false,
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
-                    LocalDateTime.now()
-                ))
-            )
+        return ApiResponse.success(
+            listOf(CouponResponse(
+                1L,
+                "쿠폰",
+                "정액",
+                1000,
+                1000,
+                1000,
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                LocalDateTime.now()
+            ))
         )
     }
 
     @PostMapping("/users/{userId}/coupons")
-    override fun issueCoupon(@RequestBody couponId: Long): ResponseEntity<ApiResponse<CouponResponse>> {
-        return ResponseEntity.ok().body(
-            ApiResponse.success(
-                CouponResponse(
-                    1L,
-                    "쿠폰",
-                    "정액",
-                    1000,
-                    1000,
-                    1000,
-                    false,
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
-                    LocalDateTime.now()
-                )
+    override fun issueCoupon(@RequestBody couponId: Long): ApiResponse<CouponResponse> {
+        return ApiResponse.success(
+            CouponResponse(
+                1L,
+                "쿠폰",
+                "정액",
+                1000,
+                1000,
+                1000,
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                LocalDateTime.now()
             )
         )
     }

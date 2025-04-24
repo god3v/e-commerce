@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Coupon", description = "쿠폰 관련 API")
@@ -24,7 +23,7 @@ interface CouponApiController {
     fun getCoupons(
         @Parameter(description = "조회할 사용자 ID", example = "1L")
         @PathVariable userId: Long
-    ): ResponseEntity<com.ecommerce.adapter.`in`.web.dto.ApiResponse<List<CouponResponse>>>
+    ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<List<CouponResponse>>
 
     @Operation(summary = "쿠폰 발급", description = "쿠폰을 발급 받습니다.")
     @ApiResponses(
@@ -37,5 +36,5 @@ interface CouponApiController {
     @PostMapping("/users/{userId}/coupons")
     fun issueCoupon(
         @RequestBody couponId: Long
-    ): ResponseEntity<com.ecommerce.adapter.`in`.web.dto.ApiResponse<CouponResponse>>
+    ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<CouponResponse>
 }

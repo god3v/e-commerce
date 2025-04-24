@@ -316,7 +316,7 @@ Content-Type: application/json
 {
   "userId": 1,
   "issuedCouponId": 2,
-  "products": [
+  "orderItems": [
     {
       "id": 3,
       "quantity": 2
@@ -327,12 +327,12 @@ Content-Type: application/json
 
 - Request Fields
 
-| Path                | Type   | Required | Description |
-|---------------------|--------|----------|-------------|
-| userId              | Number | true     | 사용자 ID      |
-| issuedCouponId      | Number | false    | 발급 쿠폰 ID    |
-| products[].id       | Number | true     | 상품 ID       |
-| products[].quantity | Number | true     | 상품 수량       |
+| Path                  | Type   | Required | Description |
+|-----------------------|--------|----------|-------------|
+| userId                | Number | true     | 사용자 ID      |
+| issuedCouponId        | Number | false    | 발급 쿠폰 ID    |
+| orderItems[].id       | Number | true     | 상품 ID       |
+| orderItems[].quantity | Number | true     | 상품 수량       |
 
 <br>
 
@@ -347,7 +347,9 @@ Content-Type: application/json
   "message": "OK",
   "errorMessage": null,
   "data": {
-    "content": null,
+    "content": {
+      "orderId": 1
+    },
     "pagination": null
   }
 }

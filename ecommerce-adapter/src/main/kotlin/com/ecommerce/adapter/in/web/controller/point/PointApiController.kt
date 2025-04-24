@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,7 +26,7 @@ interface PointApiController {
     fun getPoint(
         @Parameter(description = "조회할 사용자 ID", example = "1L")
         @PathVariable userId: Long
-    ): ResponseEntity<com.ecommerce.adapter.`in`.web.dto.ApiResponse<PointResponse>>
+    ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<PointResponse>
 
     @Operation(summary = "포인트 충전", description = "사용자의 포인트를 충전합니다.")
     @ApiResponses(
@@ -41,5 +40,5 @@ interface PointApiController {
     fun chargePoint(
         @Parameter(description = "충전할 사용자 ID", example = "1L")
         @PathVariable userId: Long
-    ): ResponseEntity<com.ecommerce.adapter.`in`.web.dto.ApiResponse<PointResponse>>
+    ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<PointResponse>
 }
