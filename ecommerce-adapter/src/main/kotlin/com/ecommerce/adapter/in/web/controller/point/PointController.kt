@@ -2,26 +2,26 @@ package com.ecommerce.adapter.`in`.web.controller.point
 
 import com.ecommerce.adapter.`in`.web.dto.ApiResponse
 import com.ecommerce.adapter.`in`.web.dto.point.PointResponse
+import com.ecommerce.port.`in`.point.ChargePointUseCase
 import com.ecommerce.port.`in`.point.GetPointUseCase
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1")
-class PointController: PointApiController {
 class PointController(
+    private val getPointUseCase: GetPointUseCase,
+    private val chargePointUseCase: ChargePointUseCase
 ) : PointApiController {
 
     @GetMapping("/users/{userId}/points")
-    override fun getPoint(@PathVariable userId: Long): ResponseEntity<ApiResponse<PointResponse>> {
-        return ResponseEntity.ok(
-            ApiResponse.success(PointResponse(1L, 10_000L))
-        )
     override fun getPoint(@PathVariable userId: Long): ApiResponse<PointResponse> {
-        return ApiResponse.success(PointResponse(point.userId, point.amount))
+        val result = getPointUseCase.getPoint(userId)
+        return ApiResponse.success(PointResponse.of(result))
     }
 
     @PostMapping("/users/{userId}/points")
-    override fun chargePoint(@PathVariable userId: Long): ApiResponse<PointResponse> {
-        return ApiResponse.success(PointResponse(1L, 10_000L))
+    override fun chargePoint(@PathVariable userId: Long, @RequestBody amount: Long): ApiResponse<PointResponse> {
+        val result = chargePointUseCase.chargePoint(userId, amount)
+        return ApiResponse.success(PointResponse.of(result))
     }
 }

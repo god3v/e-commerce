@@ -3,3 +3,5 @@ plugins {
 }
 rootProject.name = "ecommerce"
 include("ecommerce-adapter")
+include("ecommerce-domain")
+include("ecommerce-application")
