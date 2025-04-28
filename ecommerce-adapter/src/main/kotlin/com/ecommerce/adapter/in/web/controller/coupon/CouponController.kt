@@ -2,6 +2,9 @@ package com.ecommerce.adapter.`in`.web.controller.coupon
 
 import com.ecommerce.adapter.`in`.web.dto.ApiResponse
 import com.ecommerce.adapter.`in`.web.dto.coupon.CouponResponse
+import com.ecommerce.port.dto.coupon.IssueCouponCommand
+import com.ecommerce.port.`in`.coupon.GetCouponUseCase
+import com.ecommerce.port.`in`.coupon.IssueCouponUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,42 +17,25 @@ import java.util.Date
 
 @RestController
 @RequestMapping("/api/v1")
-class CouponController: CouponApiController {
+class CouponController(
+    private val getCouponUseCase: GetCouponUseCase,
+    private val issueCouponUseCase: IssueCouponUseCase
+) : CouponApiController {
 
     @GetMapping("/users/{userId}/coupons")
-    override fun getCoupons(@PathVariable userId: Long): ApiResponse<List<CouponResponse>> {
-
-        return ApiResponse.success(
-            listOf(CouponResponse(
-                1L,
-                "쿠폰",
-                "정액",
-                1000,
-                1000,
-                1000,
-                false,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-            ))
-        )
+    override fun getIssuedCoupons(
+        @PathVariable userId: Long
+    ): ApiResponse<List<CouponResponse>> {
+        val result = getCouponUseCase.getIssuedCoupons(userId)
+        return ApiResponse.success(result.map { CouponResponse.of(it) })
     }
 
-    @PostMapping("/users/{userId}/coupons")
-    override fun issueCoupon(@RequestBody couponId: Long): ApiResponse<CouponResponse> {
-        return ApiResponse.success(
-            CouponResponse(
-                1L,
-                "쿠폰",
-                "정액",
-                1000,
-                1000,
-                1000,
-                false,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                LocalDateTime.now()
-            )
-        )
+    @PostMapping("/coupons/{couponId}")
+    override fun issueCoupon(
+        @PathVariable couponId: Long,
+        @RequestBody userId: Long
+    ): ApiResponse<CouponResponse> {
+        val result = issueCouponUseCase.issueCoupon(IssueCouponCommand(couponId, userId))
+        return ApiResponse.success(CouponResponse.of(result))
     }
 }

@@ -20,7 +20,7 @@ interface CouponApiController {
         ]
     )
     @GetMapping("/users/{userId}/coupons")
-    fun getCoupons(
+    fun getIssuedCoupons(
         @Parameter(description = "조회할 사용자 ID", example = "1L")
         @PathVariable userId: Long
     ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<List<CouponResponse>>
@@ -33,8 +33,9 @@ interface CouponApiController {
             ApiResponse(responseCode = "404", description = "유효하지 않은 사용자 ID")
         ]
     )
-    @PostMapping("/users/{userId}/coupons")
+    @PostMapping("/coupons/{couponId}")
     fun issueCoupon(
-        @RequestBody couponId: Long
+        @PathVariable couponId: Long,
+        @RequestBody userId: Long,
     ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<CouponResponse>
 }
