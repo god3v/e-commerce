@@ -4,4 +4,5 @@ import com.ecommerce.domain.model.IssuedCoupon
 
 interface LoadIssuedCouponPort {
     fun loadByUserId(userId: Long): List<IssuedCoupon>
+    fun loadById(issuedCouponId: Long): IssuedCoupon
 }

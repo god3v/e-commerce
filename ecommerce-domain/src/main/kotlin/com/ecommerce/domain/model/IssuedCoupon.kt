@@ -10,14 +10,14 @@ class IssuedCoupon(
 ) {
     fun isUsed(): Boolean = used
 
-    fun isUsable(now: LocalDateTime, orderAmount: Long): Boolean {
-        return !used &&
-                now.isAfter(coupon.useStartAt) &&
-                now.isBefore(coupon.useEndAt) &&
-                orderAmount >= coupon.minOrderAmount
     fun apply(orderAmount: Long): Long {
         validateUsable(orderAmount)
         this.used = true
         return coupon.calculateDiscount(orderAmount)
+    }
+
+    private fun validateUsable(orderAmount: Long) {
+        require(!used) { "이미 사용된 쿠폰입니다." }
+        coupon.validateUsable(LocalDateTime.now(), orderAmount)
     }
 }

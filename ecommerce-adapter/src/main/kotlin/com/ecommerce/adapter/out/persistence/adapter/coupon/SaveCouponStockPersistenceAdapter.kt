@@ -1,15 +1,15 @@
 package com.ecommerce.adapter.out.persistence.adapter.coupon
 
 import com.ecommerce.domain.model.CouponStock
-import com.ecommerce.port.out.coupon.CouponStockCommandPort
+import com.ecommerce.port.out.coupon.SaveCouponStockPort
 import com.ecommerce.port.out.coupon.LoadCouponStockPort
 import org.springframework.stereotype.Repository
 
 @Repository
-class CouponStockPersistenceAdapter(
+class SaveCouponStockPersistenceAdapter(
 
 ) : LoadCouponStockPort,
-    CouponStockCommandPort {
+    SaveCouponStockPort {
 
     override fun loadByCouponId(couponId: Long): CouponStock {
         return CouponStock(1L, 100L)

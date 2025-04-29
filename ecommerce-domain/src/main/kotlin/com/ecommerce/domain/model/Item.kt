@@ -14,4 +14,9 @@ class Item(
         ON_SALE("판매중"),
         STOPPED("판매중단")
     }
+
+    fun decreaseStock(quantity: Long) {
+        require(stock >= quantity) { "재고가 부족합니다." }
+        stock -= quantity
+    }
 }
