@@ -2,16 +2,16 @@ package com.ecommerce.service.point
 
 import com.ecommerce.port.dto.point.PointResult
 import com.ecommerce.port.`in`.point.GetPointUseCase
-import com.ecommerce.port.out.point.GetPointPort
+import com.ecommerce.port.out.point.LoadPointPort
 import org.springframework.stereotype.Service
 
 @Service
 class GetPointService(
-    private val getPointPort: GetPointPort
+    private val loadPointPort: LoadPointPort
 ) : GetPointUseCase {
 
     override fun getPoint(userId: Long): PointResult {
-        val point = getPointPort.findPoint(userId)
+        val point = loadPointPort.loadByUserId(userId)
 
         return PointResult.from(point)
     }

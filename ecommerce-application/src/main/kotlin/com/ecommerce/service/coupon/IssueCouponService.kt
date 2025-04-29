@@ -3,8 +3,8 @@ package com.ecommerce.service.coupon
 import com.ecommerce.port.dto.coupon.CouponResult
 import com.ecommerce.port.dto.coupon.IssueCouponCommand
 import com.ecommerce.port.`in`.coupon.IssueCouponUseCase
-import com.ecommerce.port.out.coupon.CouponStockCommandPort
-import com.ecommerce.port.out.coupon.IssuedCouponCommandPort
+import com.ecommerce.port.out.coupon.SaveCouponStockPort
+import com.ecommerce.port.out.coupon.SaveIssuedCouponPort
 import com.ecommerce.port.out.coupon.LoadCouponPort
 import com.ecommerce.port.out.coupon.LoadCouponStockPort
 import com.ecommerce.port.out.user.LoadUserPort
@@ -15,8 +15,8 @@ class IssueCouponService(
     private val loadUserPort: LoadUserPort,
     private val loadCouponPort: LoadCouponPort,
     private val loadCouponStockPort: LoadCouponStockPort,
-    private val couponStockCommandPort: CouponStockCommandPort,
-    private val issuedCouponCommandPort: IssuedCouponCommandPort
+    private val saveCouponStockPort: SaveCouponStockPort,
+    private val issuedCouponCommandPort: SaveIssuedCouponPort
 ) : IssueCouponUseCase {
 
     override fun issueCoupon(command: IssueCouponCommand): CouponResult {
@@ -28,7 +28,7 @@ class IssueCouponService(
         // 쿠폰 발급
         val issuedCoupon = coupon.issueTo(command.userId, stock = stock)
         // 재고 감소
-        couponStockCommandPort.save(stock)
+        saveCouponStockPort.save(stock)
         // 발급 쿠폰 저장
         val saved = issuedCouponCommandPort.save(issuedCoupon)
         return CouponResult.from(saved)

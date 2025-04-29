@@ -22,7 +22,9 @@ class ItemController(
     }
 
     @GetMapping("/popular")
-    override fun getPopularItems(@RequestParam period: PeriodType): ApiResponse<List<ItemResponse>> {
+    override fun getPopularItems(
+        @RequestParam period: PeriodType
+    ): ApiResponse<List<ItemResponse>> {
         val results = getItemUseCase.getPopularItems(period)
         return ApiResponse.success(results.map { ItemResponse.of(it) })
     }

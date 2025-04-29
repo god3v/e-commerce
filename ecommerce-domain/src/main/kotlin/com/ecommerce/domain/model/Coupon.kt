@@ -15,15 +15,9 @@ class Coupon(
     val useStartAt: LocalDateTime,          // 쿠폰 사용 가능 시작 시간
     val useEndAt: LocalDateTime     // 쿠폰 사용 가능 종료 시간
 ) {
-    enum class DiscountType {
-        FIXED,
-        RATE
-    }
+    enum class DiscountType { FIXED, RATE }
 
-    fun issueTo(
-        userId: Long,
-        stock: CouponStock
-    ): IssuedCoupon {
+    fun issueTo(userId: Long, stock: CouponStock): IssuedCoupon {
         stock.decrease()
         return IssuedCoupon(
             coupon = this,

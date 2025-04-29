@@ -15,5 +15,9 @@ class IssuedCoupon(
                 now.isAfter(coupon.useStartAt) &&
                 now.isBefore(coupon.useEndAt) &&
                 orderAmount >= coupon.minOrderAmount
+    fun apply(orderAmount: Long): Long {
+        validateUsable(orderAmount)
+        this.used = true
+        return coupon.calculateDiscount(orderAmount)
     }
 }

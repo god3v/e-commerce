@@ -4,10 +4,13 @@ class Item(
     val id: Long,
     val name: String,
     val price: Long,
-    val stock: Long,
-    var status: Status
+    private var stock: Long,
+    private var status: ItemStatus
 ) {
-    enum class Status(val description: String) {
+    fun getStock(): Long = stock
+    fun getStatus(): ItemStatus = status
+
+    enum class ItemStatus(val description: String) {
         ON_SALE("판매중"),
         STOPPED("판매중단")
     }

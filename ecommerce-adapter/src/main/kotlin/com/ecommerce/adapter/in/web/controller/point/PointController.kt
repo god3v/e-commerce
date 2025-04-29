@@ -14,14 +14,19 @@ class PointController(
 ) : PointApiController {
 
     @GetMapping("/users/{userId}/points")
-    override fun getPoint(@PathVariable userId: Long): ApiResponse<PointResponse> {
+    override fun getPoint(
+        @PathVariable userId: Long
+    ): ApiResponse<PointResponse> {
         val result = getPointUseCase.getPoint(userId)
         return ApiResponse.success(PointResponse.of(result))
     }
 
     @PostMapping("/users/{userId}/points")
-    override fun chargePoint(@PathVariable userId: Long, @RequestBody amount: Long): ApiResponse<PointResponse> {
-        val result = chargePointUseCase.chargePoint(userId, amount)
+    override fun chargePoint(
+        @PathVariable userId: Long,
+        @RequestBody amount: Long
+    ): ApiResponse<PointResponse> {
+        val result = chargePointUseCase.chargePoint(userId = userId, amount = amount)
         return ApiResponse.success(PointResponse.of(result))
     }
 }

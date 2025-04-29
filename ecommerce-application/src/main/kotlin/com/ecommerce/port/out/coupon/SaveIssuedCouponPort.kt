@@ -2,6 +2,6 @@ package com.ecommerce.port.out.coupon
 
 import com.ecommerce.domain.model.IssuedCoupon
 
-interface IssuedCouponCommandPort {
+interface SaveIssuedCouponPort {
     fun save(issuedCoupon: IssuedCoupon): IssuedCoupon
 }

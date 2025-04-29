@@ -1,7 +1,6 @@
 package com.ecommerce.adapter.out.persistence.adapter.coupon
 
 import com.ecommerce.domain.model.Coupon
-import com.ecommerce.domain.model.IssuedCoupon
 import com.ecommerce.port.out.coupon.LoadCouponPort
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime

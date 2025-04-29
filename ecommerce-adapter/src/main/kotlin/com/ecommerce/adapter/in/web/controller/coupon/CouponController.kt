@@ -5,15 +5,7 @@ import com.ecommerce.adapter.`in`.web.dto.coupon.CouponResponse
 import com.ecommerce.port.dto.coupon.IssueCouponCommand
 import com.ecommerce.port.`in`.coupon.GetCouponUseCase
 import com.ecommerce.port.`in`.coupon.IssueCouponUseCase
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
-import java.util.Date
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1")
@@ -35,7 +27,7 @@ class CouponController(
         @PathVariable couponId: Long,
         @RequestBody userId: Long
     ): ApiResponse<CouponResponse> {
-        val result = issueCouponUseCase.issueCoupon(IssueCouponCommand(couponId, userId))
+        val result = issueCouponUseCase.issueCoupon(IssueCouponCommand(couponId = couponId, userId = userId))
         return ApiResponse.success(CouponResponse.of(result))
     }
 }

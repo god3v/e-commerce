@@ -15,8 +15,8 @@ data class ItemResult(
                 id = item.id,
                 name = item.name,
                 price = item.price,
-                stock = item.stock,
-                status = item.status.description
+                stock = item.getStock(),
+                status = item.getStatus().description
             )
     }
 }
