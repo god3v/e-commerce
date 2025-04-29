@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,5 +28,5 @@ interface PaymentApiController {
     @PostMapping
     fun payment(
         @RequestBody request: PaymentRequest
-    ): ResponseEntity<com.ecommerce.adapter.`in`.web.dto.ApiResponse<PaymentResponse>>
+    ): com.ecommerce.adapter.`in`.web.dto.ApiResponse<PaymentResponse>
 }
